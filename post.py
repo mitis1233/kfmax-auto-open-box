@@ -1,8 +1,7 @@
-import requests, json, os
+import requests, json, os, re
 from time import sleep
 
 def Post_Run(LogCount,LogcCookie):
-    URL="https://bbs.kfmax.com/kf_fw_ig_mybpdt.php"
     header={
         'referer': 'https://bbs.kfmax.com/kf_fw_ig_mybp.php',
         'origin':'https://bbs.kfmax.com',
@@ -12,11 +11,19 @@ def Post_Run(LogCount,LogcCookie):
     web_data={
         'do': '3',
         'id': '4',
-        'safeid': 'cd602ec'
+        'safeid': ''
         }
     count=LogCount #次數
     if LogcCookie != "": #是否更新cookie
         header['cookie']=LogcCookie
+    #get safeid
+    URL="https://bbs.kfmax.com/kf_fw_ig_mybp.php"
+    web_re=requests.get(URL,headers=header)
+    web_re=re.compile(r'safeid=\w+').findall(web_re.text)[0]
+    web_data['safeid']=re.sub('safeid=', '', web_re)
+    
+    #開箱
+    URL="https://bbs.kfmax.com/kf_fw_ig_mybpdt.php"
     i=0
     while i < count:
         try:
