@@ -28,9 +28,8 @@ def Post_Run(LogCount,LogcCookie):
     while i < count:
         try:
             i+=1
-            print(f"第{i}次:")
             web_re=requests.post(URL,headers=header,data=web_data) #post data
-            print(web_re.text)
+            print(f"第{i}次: {web_re.text}")
             sleep(0.4)
         except Exception as error:
             print('!錯誤: ',error)
